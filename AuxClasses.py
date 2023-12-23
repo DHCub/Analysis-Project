@@ -10,17 +10,11 @@ class Interval:
         self.endClosed = endClosed
 
     def __str__(self) -> str:
-        if (self.start == None or not self.startClosed): opener = "("
-        else: opener = "["
+        opener = "(" if (self.start == None or not self.startClosed) else "[" 
+        start = INFINITY_STR if self.start == None else self.start.__str__()
 
-        if (self.start == None): start = INFINITY_STR
-        else: start = self.start.__str__()
-
-        if (self.end == None): end =  INFINITY_STR
-        else: end = self.end.__str__()
-
-        if (self.end == None or not self.endClosed): closer = ")"
-        else: closer = "]"
+        end = INFINITY_STR if self.end == None else self.end.__str__()
+        closer = ")" if self.end == None or not self.endClosed else "]"
         
         return "{0}{1}, {2}{3}".format(opener, start, end, closer)
 
@@ -30,15 +24,12 @@ class MonotonyInterval(Interval):
         self.growing = growing
 
     def GetAsMonotony(self) -> str:
-        grow = None
-        if (self.growing): grow = "Creciente"
-        else: grow = "Decreciente"
+        grow = "Creciente" if self.growing else "Decreciente"
         
         return grow + " en " + super().__str__()
 
     def GetAsConvexity(self) -> str:
-        if (self.growing): grow = "Convexa"
-        else: grow = "Cóncava"
+        grow = "Convexa" if self.growing else "Cóncava"
 
         return grow + " en " + super().__str__()
 
@@ -56,10 +47,9 @@ class Extreme(Point):
         self.maximum = maximum
 
     def __str__(self) -> str:
-        if(self.maximum): mx = "Máximo"
-        else: mx = "Mínimo"
+        type = "Máximo" if self.maximum else "Mínimo"
 
-        return mx + " local en " + super().__str__()
+        return type + " local en " + super().__str__()
 
 class LinearAsymptote:
     def __init__(self, a: float, b: float, c: float) -> None:
