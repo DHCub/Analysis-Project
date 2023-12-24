@@ -1,22 +1,37 @@
 from AuxClasses import *
 
 class FunctionData:
-    def __init__(self, definitionInterval: Interval, 
-                 discontinuities: list[Point], 
+    definitionIntervals: list[Interval]
+    discontinuities: list[Discontinuity] 
+    XIntercepts: list[Point]
+    YIntercepts: list[Point] 
+    isEven: bool
+    obliqueAsymptotes: list[LinearAsymptote]
+    verticalAsymptotes: list[LinearAsymptote]
+    firstDerivativeStr: str
+    monotonyIntervals: list[PositivityInterval]
+    localExtremes: list[Extreme]
+    secondDerivativeStr: str
+    concavityIntervals: list[PositivityInterval]
+    inflectionPoints: list[Point]
+
+
+    def __init__(self, definitionIntervals: list[Interval], 
+                 discontinuities: list[Discontinuity], 
                  XIntercepts: list[Point], 
                  YIntercepts: list[Point], 
                  isEven: bool,
                  obliqueAsymptotes: list[LinearAsymptote],
                  verticalAsymptotes: list[LinearAsymptote],
                  firstDerivativeStr: str,
-                 monotonyIntervals: list[MonotonyInterval],
+                 monotonyIntervals: list[PositivityInterval],
                  localExtremes: list[Extreme],
                  secondDerivativeStr: str,
-                 concavityIntervals: list[MonotonyInterval],
+                 concavityIntervals: list[PositivityInterval],
                  inflectionPoints: list[Point],
                  plotFunction: callable
                  ):
-        self.definitionInterval = definitionInterval
+        self.definitionIntervals = definitionIntervals
         self.discontinuities = discontinuities
         self.XIntercepts = XIntercepts
         self.YIntercepts = YIntercepts
