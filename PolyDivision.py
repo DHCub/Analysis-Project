@@ -3,8 +3,7 @@ from numpy import poly1d
 from numpy import polydiv
 from FunctionData import *
 from typing_extensions import Self
-from Utils import stringifyPoly
-from Utils import apply
+from Utils import *
 from math import isclose
 
 # (definitionIntervals: list[Interval], 
@@ -60,7 +59,7 @@ class PolyQuotient:
         #region Getting Discontinuities
 
         for denRoot in self.denRoots:
-            if denRoot.imag != 0: continue
+            if not isclose(denRoot.imag, 0): continue
             
             lim = self.limit(denRoot)
             if lim is None:
@@ -72,8 +71,8 @@ class PolyQuotient:
         #region Getting Roots
         self.roots = []
         for root in self.numRoots:
-            if root.imag != 0: continue
-            if not self.denRoots.__contains__(root): self.roots += [root]
+            if not isclose(root.imag, 0): continue
+            if not contains(self.denRoots, root): self.roots += [root]
         
         #endregion
         #region Getting Parity
@@ -94,20 +93,20 @@ class PolyQuotient:
             self.obliqueAsymtote = LinearAsymptote(-a, 1, -b)
         
         self.verticalAsymptotes = []
-        if not (numPoly.order == 0 and numPoly.coef[0] == 0):
-            for denRoot in filter(lambda x: x.imag == 0, self.denRoots):
-                if denRoot in self.numRoots: continue
+        if not (numPoly.order == 0 and isclose(numPoly.coef[0], 0)):
+            for denRoot in filter(lambda x: isclose(x.imag, 0), self.denRoots):
+                if contains(self.numRoots, denRoot): continue
                 self.verticalAsymptotes += [LinearAsymptote(1, 0, -denRoot)]
 
         #endregion
         #region Getting Positivity Intervals
 
-        if not (numPoly.order == 0 and numPoly.coef[0] == 0):
+        if not (numPoly.order == 0 and isclose(numPoly.coef[0], 0)):
             criticalPoints = self.roots + apply(self.discontinuities, lambda x: x.x)
-            criticalPoints = list(set(criticalPoints))
+            criticalPoints = getApproxUnique(criticalPoints)
             criticalPoints.sort()
             
-            print(criticalPoints)
+            print(apply(self.discontinuities, lambda x: x.x))
 
             if criticalPoints.__len__() == 0:
                 self.positivityIntervals = [PositivityInterval(
@@ -138,19 +137,19 @@ class PolyQuotient:
 
         
     def limit(self, x: float) -> float:
-        if (not self.denRoots.__contains__(x)): return self.numPoly(x)/self.denPoly(x)
+        if (not contains(self.denRoots, x)): return self.numPoly(x)/self.denPoly(x)
     
         if (self.numPoly.order == 0): return 0
-        if (not self.numRoots.__contains__(x)): return None
+        if (not contains(self.numRoots, x)): return None
 
         lim = 1
 
         for root in self.numPoly.roots:
-            if (x == root): continue
+            if isclose(x, root): continue
             lim*=(x - root)
         
         for root in self.denPoly.roots:
-            if (x == root): continue
+            if isclose(x, root): continue
             lim/=(x - root)
 
         lim*= (self.numPoly.coefficients[0]/self.denPoly.coefficients[0])
@@ -164,8 +163,9 @@ class PolyQuotient:
         return "( {0} )/( {1} )".format(stringifyPoly(self.numPoly), stringifyPoly(self.denPoly))
 
     def hasDiscontinuityAt(self, x: float) -> bool:
+        if not isclose(x.imag, 0): return False
         for disc in self.discontinuities:
-            if disc.x == x: return True
+            if isclose(disc.x, x): return True
         return False
 
 
@@ -177,7 +177,7 @@ def PolyDivision(p1: list[float], p2: list[float]) -> FunctionData:
     defIntervals: list[Interval]
     defIntervals = []
 
-    realDenRoots = list(filter(lambda x: x.imag == 0, quotient.denRoots))
+    realDenRoots = list(filter(lambda x: isclose(x.imag, 0), quotient.denRoots))
 
     if (realDenRoots.__len__() == 0):
         defIntervals = [Interval.Reals()]
@@ -197,7 +197,7 @@ def PolyDivision(p1: list[float], p2: list[float]) -> FunctionData:
         XIntercepts += [Point(root, 0)]
 
     YIntercepts: list[Point]
-    if (0 in quotient.denRoots): YIntercepts = []
+    if contains(quotient.denRoots, 0): YIntercepts = []
     else: YIntercepts = [Point(0, quotient.limit(0))]
 
     firstDer = quotient.deriv()

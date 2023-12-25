@@ -1,4 +1,5 @@
 from numpy import poly1d
+from math import isclose
 
 def stringifyPoly(poly: poly1d) -> str:
     if (poly.order == 0): return poly.coef[0].__str__()
@@ -24,4 +25,18 @@ def apply(collection: list, func: callable) -> list:
     answ = []
     for item in collection:
         answ += [func(item)]
+    return answ
+
+def contains(floats: list[float], target: float) -> bool:
+    for x in floats:
+        if isclose(target.real, x.real) and isclose(target.imag, x.imag): return True
+    
+    return False
+
+def getApproxUnique(floats: list[float]) -> list[float]:
+    answ = []
+    for item in floats:
+        if contains(answ, item): continue
+        answ += [item]
+
     return answ
