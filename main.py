@@ -161,16 +161,19 @@ def project_4():
     a = st.number_input("a", min_value=-100.0, max_value=100.0, value=1.0, step=1.0)
     b = st.number_input("b", min_value=-100.0, max_value=100.0, value=2.0, step=1.0)
     c = st.number_input("c", min_value=-100.0, max_value=100.0, value=3.0, step=1.0)
-    x = st.number_input("Range to draw around the root", min_value=0, value=10)
+    x = st.number_input("Range to draw function around the root", min_value=0, value=10)
 
     f = lambda x: x**3 + a*x**2 + b*x + c
     r, bisectionXes = MonicPoly3Root(a, b, c)
     X, Y = GetAxes(f, r - x/2, r + x/2)
-    st.text(f"f(x) = x^3 + ({a})x^2 + ({b})x + ({c})")
+    # st.text(f"f(x) = x^3 + ({a})x^2 + ({b})x + ({c})")
+    sign = lambda x: "+" if x > 0 else "-"
+    st.latex(f'f(x) = x^3 {sign(a)} {abs(a)}x^2 {sign(b)} {abs(b)}x {sign(c)} {abs(c)}')
     st.text(f"Root: {r} (red line, error of 1E-9)")
     st.text(f"Starting values for bisection: a = {bisectionXes[0][0]}, b = {bisectionXes[0][1]} (green lines)")
     st.text(f"f(a) = {f(bisectionXes[0][0])}, f(b) = {f(bisectionXes[0][1])}")
 
+    
     df = pd.DataFrame({'x':X, 'f': Y}).set_index('x')
 
     chart = px.line(df)
@@ -179,6 +182,18 @@ def project_4():
     chart.add_vline(x=bisectionXes[0][1], line=dict(color='green'))
     chart.add_vline(x=r, line=dict(color='red'))
     st.plotly_chart(chart)
+    for item in bisectionXes:
+        item += [f(item[0]), f(item[1])]
+    
+    df = pd.DataFrame(bisectionXes, [f"Iteration {x + 1}" for x in range(bisectionXes.__len__())], ['a', 'b', 'f(a)', 'f(b)'])
+    st.text("Bisection method data:")
+    df.style.format(precision=9)
+    st.dataframe(df, column_config={
+        'a': st.column_config.NumberColumn(format="%.8f"),
+        'b': st.column_config.NumberColumn(format="%.8f"),
+        'f(a)': st.column_config.NumberColumn(format="%.8f"),
+        'f(b)': st.column_config.NumberColumn(format="%.8f"),
+    }, use_container_width=True)
 
 # Create a dictionary of page names and corresponding functions
 pages = {

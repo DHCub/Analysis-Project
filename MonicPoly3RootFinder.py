@@ -7,7 +7,7 @@ def BisectRoot(a: float, b: float, f: callable):
         m = (a + b)/2
         y = f(m)
         X.append([a, b])
-        if abs(y) < 1E-9: return (m, X)
+        if abs(y) < 1E-10: return (m, X)
 
         if y < 0: a = m
         else: b = m 
