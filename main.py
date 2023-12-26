@@ -1,5 +1,10 @@
 import streamlit as st
 import numpy as np
+from MonicPoly3RootFinder import *
+from plotter import GetAxes
+# import matplotlib.pyplot as plt
+import pandas as pd
+import plotly.express as px
 
 def home():
     st.title("Home Page")
@@ -152,12 +157,36 @@ def proyect_1():
         line = st.line_chart(x)
     update()
 
+def project_4():
+    a = st.number_input("a", min_value=-100.0, max_value=100.0, value=1.0, step=1.0)
+    b = st.number_input("b", min_value=-100.0, max_value=100.0, value=2.0, step=1.0)
+    c = st.number_input("c", min_value=-100.0, max_value=100.0, value=3.0, step=1.0)
+    x = st.number_input("Range to draw around the root", min_value=0, value=10)
+
+    f = lambda x: x**3 + a*x**2 + b*x + c
+    r, bisectionXes = MonicPoly3Root(a, b, c)
+    X, Y = GetAxes(f, r - x/2, r + x/2)
+    st.text(f"f(x) = x^3 + ({a})x^2 + ({b})x + ({c})")
+    st.text(f"Root: {r} (red line, error of 1E-9)")
+    st.text(f"Starting values for bisection: a = {bisectionXes[0][0]}, b = {bisectionXes[0][1]} (green lines)")
+    st.text(f"f(a) = {f(bisectionXes[0][0])}, f(b) = {f(bisectionXes[0][1])}")
+
+    df = pd.DataFrame({'x':X, 'f': Y}).set_index('x')
+
+    chart = px.line(df)
+    chart.add_hline(y=0, line=dict(color='white'))
+    chart.add_vline(x=bisectionXes[0][0], line=dict(color='green'))
+    chart.add_vline(x=bisectionXes[0][1], line=dict(color='green'))
+    chart.add_vline(x=r, line=dict(color='red'))
+    st.plotly_chart(chart)
+
 # Create a dictionary of page names and corresponding functions
 pages = {
     "Home": home,
     "About Us": about,
     "Function Selection": function_selection,
-    "Proyecto 1": proyect_1
+    "Proyecto 1": proyect_1,
+    "Proyecto 4": project_4
 }
 
 # Create a sidebar to navigate between pages
