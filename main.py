@@ -157,7 +157,7 @@ def proyect_1():
         line = st.line_chart(x)
     update()
 
-def project_4():
+def project_3():
     a = st.number_input("a", min_value=-100.0, max_value=100.0, value=1.0, step=1.0)
     b = st.number_input("b", min_value=-100.0, max_value=100.0, value=2.0, step=1.0)
     c = st.number_input("c", min_value=-100.0, max_value=100.0, value=3.0, step=1.0)
@@ -201,7 +201,7 @@ pages = {
     "About Us": about,
     "Function Selection": function_selection,
     "Proyecto 1": proyect_1,
-    "Proyecto 4": project_4
+    "Proyecto 3": project_3
 }
 
 # Create a sidebar to navigate between pages
