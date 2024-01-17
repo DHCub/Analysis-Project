@@ -158,9 +158,9 @@ def proyect_1():
     update()
 
 def project_3():
-    a = st.number_input("a", min_value=-100.0, max_value=100.0, value=1.0, step=1.0)
-    b = st.number_input("b", min_value=-100.0, max_value=100.0, value=2.0, step=1.0)
-    c = st.number_input("c", min_value=-100.0, max_value=100.0, value=3.0, step=1.0)
+    a = st.number_input("a", value=1.0, step=1.0)
+    b = st.number_input("b", value=2.0, step=1.0)
+    c = st.number_input("c", value=3.0, step=1.0)
     x = st.number_input("Range to draw function around the root", min_value=0, value=10)
 
     f = lambda x: x**3 + a*x**2 + b*x + c
