@@ -1,0 +1,50 @@
+\documentclass{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage{relsize}
+\usepackage[left=2cm, right=2cm, top=3cm, bottom=3cm]{geometry}
+
+\begin{document}
+
+\title{Reporte Auxiliar de Proyecto 3}
+\date{19 de Enero de 2024}
+\maketitle
+
+\section{Teoremas de Weierstrass}
+
+\subsection{Primer Teorema}
+
+El primer Teroema de Weierstrass enuncia que si la función f(x) es continua sobre el intervalo cerrado y acotado [a, b], entonces f está acotada sobre [a, b]
+
+Asumamos que f(x) no está acotada superiormente (inferiormente) en I = [a, b], entonces para cada número natural n se encuentra $x_n$ tal que $f(x_n) > n$ $(f(x_n) < -n)$, de esta forma se puede obtener una sucesión $\{f(x_n)\}$ infinitamente grande, la sucesión $\{x_n\}$ está acotada, pues todos sus elementos pertenecen a I, ergo y por teorema de Bolzano-Weierstrass (toda sucesión acotada contiene una subsucesión convergente) existe $x_c$, $\{x_{k_n}\}$, esta última subsucesión de $\{x_n\}$ tal que $\{x_{k_n}\} \rightarrow x_c$, entonces $\{f(x_{k_n})\} \rightarrow f(x_c)$, pero $\{f(x_n)\}$ entonces contendría a una subsucesión convergente, lo cual es una contradicción, ergo f(x) está acotada superiormente (inferiormente). $\blacksquare$
+
+\subsection{Segundo Teorema}
+
+El segundo Teorema de Weierstrass enuncia que si f(x) es continua sobre el intervalo cerrado y acotado [a, b], entonces, teniendo en cuenta que está acotada por el primer Teorema, alcanza su supremo e ínfimo en este intervalo, es decir, existen $x_1$ y $x_2$ pertenecientes a [a, b] tal que para M supremo y m ínfimo de f(x) en [a, b] $f(x_1) = M$ y $f(x_2) = m$.
+
+Asumamos que f(x) es continua en I = [a, b] y que no alcanza su supremo (ínfimo). Consideremos $g(x) = \frac{1}{M - f(x)}$ ($g(x) = \frac{1}{f(x) - m}$), g(x) es continua en I pues su denominador es continuo y no se anula, ergo está acotada por primer Teorema de Weierstrass, ergo existe $A > 0$ tal que $\forall(x \in I) A > \frac{1}{M - f(x)}$ lo cual implica que $\forall(x \in I) Mº - \frac{1}{A} > f(x)$ ($\forall(x \in I) A > \frac{1}{f(x) - m}$, lo cual implica que $\forall(x \in I) f(x) > m + \frac{1}{A}$), lo cual es una contradicción, ergo, f(x) alcanza su supremo (ínfimo) en I $\blacksquare$
+
+\section{Demostración de alcance de Máximo}
+
+Dada la función $C(t) = \frac{A}{\sigma_2 - \sigma_1}(e^{-\sigma_1t} - e^{-\sigma_2t})$ para $t > 0, A > 0, \sigma_2 > \sigma_1 > 0$, demostremos que alcanza su máximo.
+
+Como $x > 0 \Rightarrow e^x > 1$
+
+\begin{center}
+
+    \begin{math}
+        \mathlarger{
+        t > 0 \newline 
+        \Rightarrow e^{(\sigma_2 - \sigma_1)t} > 1 
+        \Rightarrow \frac{e^{-\sigma_1t}}{e^{-\sigma_2t}} > 1 
+        \Rightarrow e^{-\sigma_1t} > e^{-\sigma_2t} 
+        \Rightarrow e^{-\sigma_1t} - e^{-\sigma_2t} > 0  
+        \Rightarrow C(t) >  0 }
+    \end{math}
+
+\end{center}
+
+Sea $t_0 > 0$. C es claramente continua en $\mathbb{R}$ (composición de funciones continuas), C(0) = 0, como $\lim_{t \rightarrow 0} C(t) = 0$ existe $t_1 > 0$ tal que para $0 < t < t_1, C(t) < C(t_0)$, similarmente y como $\lim_{t \rightarrow \infty} C(t) = 0$, existe $t_2' > 0$ tal que para $t > t_2', C(t) < C(t_0)$, sea $t_2 = max\{t_2', t_1\}$, podemos pues decir que en $\mathbb{R}^+ - [t_1, t_2], C(t) < C(t_0)$, como $I = [t_1, t_2] \subset \mathbb{R}$, C es continua en I, ergo alcanza su máximo $M = C(t_m)$ para $m \in I$ por segundo Teorema de Weierstrass, ergo para todo $t \in \mathbb{R}^+, C(t_m) \geq C(t)$, ergo C alcanza su máximo en $\mathbb{R}$ $\blacksquare$ 
+
+\end{document}

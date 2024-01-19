@@ -97,12 +97,50 @@ def project_3():
         'f(b)': st.column_config.NumberColumn(format="%.8f"),
     }, use_container_width=True)
 
+def project_4():
+    s1 = st.number_input("$\sigma_1$", min_value=0.0, value=1.0, step=1.0)
+    s2 = st.number_input("$\sigma_2$", min_value=0.0, value=2.0, step=1.0)
+    a = st.number_input("A", min_value=0.0, value= 1.0, step=1.0)
+    x = st.number_input("Range to draw function", min_value=0.0, value=10.0, step=10.0)
+
+    error = False
+    if (s1 == 0): 
+        st.error("$\sigma_1$ cannot be 0")
+        error = True
+    if (s2 == 0): 
+        st.error("$\sigma_2$ cannot be 0")
+        error = True
+    if (s1 >= s2): 
+        st.error("$\sigma_1$ cannot be $\geq \sigma_2$")
+        error = True
+
+    if not error:
+        f = lambda x: a*(float(cmath.e)**(-s1*x) - float(cmath.e)**(-s2*x))/(s2 - s1)
+        X, Y = GetAxes(f, 0, x, 10000)
+
+        m = (cmath.log(s2/s1)/(s2 - s1)).real
+
+        df = pd.DataFrame({'x': X, 'C': Y}).set_index('x')
+
+        chart = px.line(df).update_layout(xaxis_title='t', yaxis_title="C")
+        chart.add_vline(x=m, line=dict(color='red'))
+
+        curlyOpen = r'{'
+        curlyClose = r'}'
+
+        st.latex(f'C(t) = \\frac{curlyOpen}{a}{curlyClose + curlyOpen}{s1} - {s2}{curlyClose}(e^{curlyOpen}{-s1}t{curlyClose}-e^{curlyOpen}{-s2}t{curlyClose})')
+        st.text(f'Maximum: C({m}) = {f(m)}' if a != 0 else 'Maximum C(0) = 0')
+
+        st.plotly_chart(chart)
+
+
 # Create a dictionary of page names and corresponding functions
 pages = {
     "Home": home,
     "About Us": about,
     "Proyecto 1": proyect_1,
     "Proyecto 3": project_3,
+    "Proyecto 4": project_4
 }
 
 # Create a sidebar to navigate between pages
