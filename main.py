@@ -128,7 +128,7 @@ def project_4():
         curlyOpen = r'{'
         curlyClose = r'}'
 
-        st.latex(f'C(t) = \\frac{curlyOpen}{a}{curlyClose + curlyOpen}{s1} - {s2}{curlyClose}(e^{curlyOpen}{-s1}t{curlyClose}-e^{curlyOpen}{-s2}t{curlyClose})')
+        st.latex(f'C(t) = \\frac{curlyOpen}{a}{curlyClose + curlyOpen}{s2} - {s1}{curlyClose}(e^{curlyOpen}{-s1}t{curlyClose}-e^{curlyOpen}{-s2}t{curlyClose})')
         st.text(f'Maximum: C({m}) = {f(m)}' if a != 0 else 'Maximum C(0) = 0')
 
         st.plotly_chart(chart)
